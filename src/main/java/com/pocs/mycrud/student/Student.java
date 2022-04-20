@@ -23,6 +23,9 @@ public class Student {
     private String email;
     private LocalDate dob;
 
+    @Transient
+    private int age;
+
     public Student() {
 
     }
@@ -33,12 +36,6 @@ public class Student {
         this.email = email;
         this.dob = dob;
     }
-
-//    public Student(String name, String email, LocalDate dob) {
-//        this.name = name;
-//        this.email = email;
-//        this.dob = dob;
-//    }
 
     public Long getId() {
         return id;
@@ -70,6 +67,10 @@ public class Student {
 
     public void setDob(LocalDate dob) {
         this.dob = dob;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public Integer getAge() {
