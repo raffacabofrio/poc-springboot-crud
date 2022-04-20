@@ -1,30 +1,52 @@
 package com.pocs.mycrud.student;
 
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudentService {
-    public List<Student> getStudents() {
-        return List.of(
-            new Student(
-                    1L,
-                    "Camila",
-                    "camila@gmail.com",
-                    LocalDate.of(1987, 5, 12),
-                    35
-            ),
-            new Student(
-                    2L,
-                    "Raffa",
-                    "raffa@gmail.com",
-                    LocalDate.of(1978, 10, 19),
-                    43
-            )
 
-        );
+
+    private final StudentRepository repo;
+
+    @Autowired
+    public StudentService(StudentRepository repo) {
+        this.repo = repo;
+    }
+
+    public List<Student> getStudents() {
+
+        return repo.findAll();
+//        return List.of(
+//            new Student(
+//                    1L,
+//                    "Camila",
+//                    "camila@gmail.com",
+//                    LocalDate.of(1987, 5, 12),
+//                    35
+//            ),
+//            new Student(
+//                    2L,
+//                    "Raffa",
+//                    "raffa@gmail.com",
+//                    LocalDate.of(1978, 10, 19),
+//                    43
+//            )
+//
+//        );
+    }
+
+    public void addNewStudent(Student s) throws Exception {
+
+        // então esse é o nullable no java!
+        Optional<Student> existing = repo.findStudentByEmail(s.getEmail());
+
+        if(existing.isPresent())
+            throw new IllegalStateException("O email já existe.");
+
+        repo.save(s);
     }
 }
